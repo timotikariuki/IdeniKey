@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
+import { withIAPContext } from 'react-native-iap';
 import SubscriptionScreen from './SubscriptionScreen';
 import MainAppContent from './MainAppContent';
 import * as RNIap from 'react-native-iap';
@@ -14,11 +15,14 @@ const App = () => {
       try {
         await RNIap.initConnection();
         const purchases = await RNIap.getAvailablePurchases();
+        console.log(purchases);
         const subscription = purchases.find(
           (purchase) => purchase.productId === itemSubs[0]
         );
+        console.log("==========1======");
         setIsSubscribed(!!subscription);
       } catch (err) {
+        console.log("==========2======");
         console.warn(err.code, err.message);
         setIsSubscribed(false);
       } finally {
@@ -40,4 +44,4 @@ const App = () => {
   return isSubscribed ? <MainAppContent /> : <SubscriptionScreen />;
 };
 
-export default App;
+export default withIAPContext(App);
