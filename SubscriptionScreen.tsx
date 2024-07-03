@@ -29,9 +29,10 @@ const SubscriptionScreen = () => {
     }
   }, [currentPurchase]);
 
-  const handleSubscribe = async (sku) => {
+  const handleSubscribe = async (subscription) => {
+    const subscriptionOffers = [{sku: subscription.productId, offerToken: subscription.subscriptionOfferDetails[0].offerToken,}]
     try {
-      await requestSubscription({ sku });
+      await requestSubscription({ subscriptionOffers });
     } catch (error) {
       console.error('Error requesting subscription', error);
     }
@@ -43,7 +44,7 @@ const SubscriptionScreen = () => {
         <View key={subscription.productId}>
           <Text>{subscription.title}</Text>
           <Text>{subscription.localizedPrice}</Text>
-          <Button title="Subscribe" onPress={() => handleSubscribe(subscription.productId)} />
+          <Button title="Subscribe" onPress={() => handleSubscribe(subscription)} />
         </View>
       ))}
     </View>
